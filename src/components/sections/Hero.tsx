@@ -26,7 +26,7 @@ export function Hero() {
     }, []);
 
     return (
-        <section ref={heroRef} className="relative h-[500px] md:h-[700px] lg:h-[1024px] max-w-[1440px] mx-auto snap-section overflow-hidden">
+        <section ref={heroRef} className="relative h-[500px] md:h-[700px] lg:h-[1024px] max-w-[1440px] mx-auto snap-section overflow-hidden lg:overflow-visible">
             {/* Background */}
             <div className="absolute inset-0 bg-[var(--color-background)] pointer-events-none" />
 

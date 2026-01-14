@@ -8,17 +8,18 @@ export function AboutMe() {
         <div id="about" className="relative overflow-visible pt-8 pb-12 md:py-16 lg:py-0 lg:h-[1024px] max-w-[1440px] mx-auto snap-section">
             {/* Background overlay - theme-aware with soft top edge */}
             <div
-                className="absolute pointer-events-none z-10 about-overlay"
+                className="absolute pointer-events-none z-20 about-overlay"
                 style={{
                     width: '100vw',
-                    height: '100%',
+                    height: 'calc(100% + 500px)',
+                    top: '-500px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                 }}
             />
 
             {/* Content container - flexbox for proper positioning */}
-            <div className="relative z-20 h-full flex flex-col justify-center lg:justify-end lg:pb-[227px]">
+            <div className="relative z-30 h-full flex flex-col justify-center lg:justify-end lg:pb-[227px]">
                 {/* All text content - centered */}
                 <div
                     className="mx-auto text-center px-6 lg:px-0"
