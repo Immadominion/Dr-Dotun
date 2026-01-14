@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 export function Hero() {
     const [mounted, setMounted] = useState(false);
     const [scrolledPastHero, setScrolledPastHero] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const heroRef = useRef<HTMLElement>(null);
-    const { scrollY } = useScroll();
-
-    // Subtle parallax - image stays visible as it scrolls
-    const imageY = useTransform(scrollY, [0, 1000], [0, 200]);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -25,8 +25,37 @@ export function Hero() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Focus input when expanded
+    useEffect(() => {
+        if (isExpanded && inputRef.current) {
+            setTimeout(() => inputRef.current?.focus(), 300);
+        }
+    }, [isExpanded]);
+
+    const handleSubscribe = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email || status === "loading") return;
+
+        setStatus("loading");
+
+        try {
+            // Redirect to Substack with email prefilled for subscription
+            const substackUrl = `https://drdotun.substack.com/subscribe?email=${encodeURIComponent(email)}`;
+            window.open(substackUrl, '_blank');
+            setStatus("success");
+            setTimeout(() => {
+                setStatus("idle");
+                setIsExpanded(false);
+                setEmail("");
+            }, 2000);
+        } catch {
+            setStatus("error");
+            setTimeout(() => setStatus("idle"), 2000);
+        }
+    };
+
     return (
-        <section ref={heroRef} className="relative h-[500px] md:h-[700px] lg:h-[1024px] max-w-[1440px] mx-auto snap-section overflow-hidden lg:overflow-visible">
+        <section ref={heroRef} className="relative h-[500px] md:h-[700px] lg:h-[1024px] max-w-[1440px] mx-auto snap-section overflow-visible">
             {/* Background */}
             <div className="absolute inset-0 bg-[var(--color-background)] pointer-events-none" />
 
@@ -52,7 +81,6 @@ export function Hero() {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ y: mounted ? imageY : 0 }}
                     className="relative flex justify-center"
                 >
                     {/* Container for image - based on 1440px reference width */}
@@ -236,47 +264,194 @@ export function Hero() {
                 </motion.div>
             </motion.div>
 
-            {/* Stay in Touch Button - 222x76px, 192px from right, 66px from bottom */}
-            <motion.a
-                href="https://drdotun.substack.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: scrolledPastHero ? 0 : 1, x: scrolledPastHero ? 50 : 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute z-40 hidden lg:flex items-center gap-3 hover:scale-105 transition-transform duration-300"
+            {/* Stay in Touch Button - Expandable Email Subscription - Responsive */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: scrolledPastHero ? 0 : 1, y: scrolledPastHero ? 20 : 0 }}
+                transition={{ duration: 0.5 }}
+                className="fixed lg:absolute z-40 bottom-6 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto lg:right-[192px] lg:bottom-[66px]"
                 style={{
-                    right: '192px',
-                    bottom: '66px',
-                    width: '222px',
-                    height: '76px',
-                    backgroundColor: '#000000',
-                    borderRadius: '38px',
-                    padding: '4px',
-                    color: 'white',
                     pointerEvents: scrolledPastHero ? 'none' : 'auto'
                 }}
             >
-                <span
-                    className="flex items-center justify-center rounded-full"
+                <motion.div
+                    initial={false}
+                    animate={{
+                        width: isExpanded ? 340 : 200,
+                        backgroundColor: isExpanded ? '#FF7731' : '#000000',
+                    }}
+                    transition={{
+                        duration: 0.5,
+                        ease: [0.4, 0, 0.2, 1],
+                    }}
+                    className="flex items-center relative"
                     style={{
-                        width: '68px',
-                        height: '68px',
-                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.2) 100%)',
-                        backdropFilter: 'blur(4px) saturate(120%)',
-                        WebkitBackdropFilter: 'blur(4px) saturate(120%)',
-                        border: '1px solid rgba(255, 255, 255, 0.3)',
-                        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-                        flexShrink: 0
+                        height: '64px',
+                        borderRadius: '64px',
+                        padding: '4px',
                     }}
                 >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
+                    {/* Clickable area for collapsed state - covers entire button */}
+                    {!isExpanded && (
+                        <button
+                            onClick={() => setIsExpanded(true)}
+                            className="absolute inset-0 w-full h-full cursor-pointer z-20 rounded-full"
+                            aria-label="Expand email subscription"
+                        />
+                    )}
+
+                    {/* Circle Icon - Animates position */}
+                    <motion.div
+                        initial={false}
+                        animate={{
+                            x: isExpanded ? 268 : 0,
+                        }}
+                        transition={{
+                            duration: 0.5,
+                            ease: [0.4, 0, 0.2, 1],
+                        }}
+                        className="absolute left-[4px] flex items-center justify-center rounded-full flex-shrink-0 z-10"
+                        style={{
+                            width: '56px',
+                            height: '56px',
+                            background: isExpanded ? '#000000' : 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.2) 100%)',
+                            backdropFilter: isExpanded ? 'none' : 'blur(4px) saturate(120%)',
+                            WebkitBackdropFilter: isExpanded ? 'none' : 'blur(4px) saturate(120%)',
+                            border: isExpanded ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
+                            boxShadow: isExpanded ? 'none' : 'inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+                            cursor: isExpanded ? 'pointer' : 'default',
+                        }}
+                        onClick={isExpanded ? handleSubscribe : undefined}
+                    >
+                        {/* Arrow icon - shown when collapsed */}
+                        <motion.div
+                            initial={false}
+                            animate={{
+                                opacity: isExpanded ? 0 : 1,
+                                scale: isExpanded ? 0.5 : 1,
+                            }}
+                            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                            className="absolute"
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </motion.div>
+
+                        {/* Check icon - shown when expanded */}
+                        <motion.div
+                            initial={false}
+                            animate={{
+                                opacity: isExpanded ? 1 : 0,
+                                scale: isExpanded ? 1 : 0.5,
+                            }}
+                            transition={{ duration: 0.25, delay: isExpanded ? 0.15 : 0, ease: [0.4, 0, 0.2, 1] }}
+                            className="absolute"
+                        >
+                            {status === "loading" ? (
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                                    </svg>
+                                </motion.div>
+                            ) : (
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                            )}
+                        </motion.div>
+                    </motion.div>
+
+                    {/* Text Label - Fades out when expanded */}
+                    <motion.span
+                        initial={false}
+                        animate={{
+                            opacity: isExpanded ? 0 : 1,
+                            x: isExpanded ? -20 : 0,
+                        }}
+                        transition={{
+                            duration: 0.3,
+                            ease: [0.4, 0, 0.2, 1],
+                        }}
+                        className="font-medium text-white text-sm lg:text-base whitespace-nowrap absolute pointer-events-none"
+                        style={{
+                            left: '72px',
+                        }}
+                    >
+                        Stay in Touch
+                    </motion.span>
+
+                    {/* Email Input - Fades in when expanded */}
+                    <motion.div
+                        initial={false}
+                        animate={{
+                            opacity: isExpanded ? 1 : 0,
+                            x: isExpanded ? 0 : 20,
+                        }}
+                        transition={{
+                            duration: 0.3,
+                            delay: isExpanded ? 0.15 : 0,
+                            ease: [0.4, 0, 0.2, 1],
+                        }}
+                        className="flex items-center bg-white absolute"
+                        style={{
+                            left: '4px',
+                            width: '260px',
+                            height: '56px',
+                            borderRadius: '64px',
+                            paddingLeft: '20px',
+                            paddingRight: '20px',
+                            pointerEvents: isExpanded ? 'auto' : 'none',
+                        }}
+                    >
+                        <input
+                            ref={inputRef}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your mail"
+                            onKeyDown={(e) => e.key === 'Enter' && handleSubscribe(e)}
+                            className="w-full bg-transparent outline-none text-black text-sm lg:text-base"
+                            style={{
+                                fontFamily: 'var(--font-display)',
+                                fontWeight: 500,
+                                letterSpacing: '-0.02em',
+                            }}
+                        />
+                    </motion.div>
+                </motion.div>
+
+                {/* Close button - positioned outside the container */}
+                <motion.button
+                    initial={false}
+                    animate={{
+                        opacity: isExpanded ? 1 : 0,
+                        scale: isExpanded ? 1 : 0.5,
+                    }}
+                    transition={{
+                        duration: 0.3,
+                        delay: isExpanded ? 0.25 : 0,
+                        ease: [0.4, 0, 0.2, 1],
+                    }}
+                    onClick={() => {
+                        setIsExpanded(false);
+                        setEmail("");
+                        setStatus("idle");
+                    }}
+                    className="absolute -top-2 -right-2 w-7 h-7 bg-black rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors shadow-lg"
+                    style={{
+                        pointerEvents: isExpanded ? 'auto' : 'none',
+                    }}
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                        <path d="M18 6L6 18M6 6l12 12" />
                     </svg>
-                </span>
-                <span className="font-medium text-left flex-1" style={{ paddingLeft: '8px', paddingRight: '16px' }}>Stay in Touch</span>
-            </motion.a>
+                </motion.button>
+            </motion.div>
         </section>
     );
 }

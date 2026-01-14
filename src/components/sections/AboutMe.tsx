@@ -7,12 +7,24 @@ export function AboutMe() {
     return (
         <div id="about" className="relative overflow-visible pt-8 pb-12 md:py-16 lg:py-0 lg:h-[1024px] max-w-[1440px] mx-auto snap-section">
             {/* Background overlay - theme-aware with soft top edge */}
+            {/* Mobile: extends 150px up, Tablet: 300px, Desktop: 500px */}
             <div
-                className="absolute pointer-events-none z-20 about-overlay"
+                className="absolute pointer-events-none z-20 about-overlay hidden lg:block"
                 style={{
                     width: '100vw',
                     height: 'calc(100% + 500px)',
                     top: '-500px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                }}
+            />
+            {/* Mobile/Tablet overlay - smaller extension */}
+            <div
+                className="absolute pointer-events-none z-20 about-overlay-mobile lg:hidden"
+                style={{
+                    width: '100vw',
+                    height: 'calc(100% + 200px)',
+                    top: '-200px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                 }}
