@@ -48,7 +48,7 @@ export function LatestPodcasts() {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Section id="podcast" className="overflow-hidden py-20 md:py-28">
+        <Section id="podcast" className="overflow-hidden py-24 md:py-32">
             <Container>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -98,7 +98,7 @@ export function LatestPodcasts() {
                                 />
 
                                 {/* Guest info overlay - visible on hover */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-accent-primary)] via-[var(--color-accent-primary)]/80 to-[var(--color-accent-primary)]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-accent-primary)] via-[var(--color-accent-primary)]/80 to-[var(--color-accent-primary)]/40 opacity-0 group-hover:opacity-90 transition-opacity duration-300 flex flex-col justify-end p-6">
                                     {/* Episode info row - name and icons on same line with ellipsis */}
                                     <div className="flex items-center gap-3 w-full">
                                         <h3 className="flex-1 text-[24px] md:text-[28px] lg:text-[32px] leading-tight tracking-[-0.05em] font-normal text-white truncate" style={{ fontFamily: 'Poppins, sans-serif' }}>
@@ -124,17 +124,50 @@ export function LatestPodcasts() {
                             </a>
                         </motion.div>
                     ))}
+
+                    {/* See More Card */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.5, delay: podcastEpisodes.length * 0.1 }}
+                        className="flex-shrink-0 w-[340px] md:w-[400px] lg:w-[440px] snap-start"
+                    >
+                        <a
+                            href="https://youtube.com/@dotunolowoporoku7147"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group block aspect-[3/4] relative bg-[var(--color-background-secondary)] cursor-pointer rounded-[var(--radius-xl)] overflow-hidden border-2 border-dashed border-[var(--color-foreground-muted)] hover:border-[var(--color-foreground)] transition-all duration-300"
+                        >
+                            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-4 text-[var(--color-foreground-muted)] group-hover:text-[var(--color-foreground)] transition-colors">
+                                    <path d="M5 12h14" />
+                                    <path d="m12 5 7 7-7 7" />
+                                </svg>
+                                <h3 className="text-2xl md:text-3xl font-normal text-[var(--color-foreground)] mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                                    See More Episodes
+                                </h3>
+                                <p className="text-sm text-[var(--color-foreground-secondary)]" style={{ fontFamily: 'var(--font-sans)' }}>
+                                    Watch all episodes on YouTube
+                                </p>
+                            </div>
+                        </a>
+                    </motion.div>
                 </div>
 
                 {/* Scroll fade indicators */}
             </div>
 
             {/* Scroll Down indicator - bottom left, desktop only */}
-            <motion.div
+            <motion.button
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="absolute hidden lg:flex items-center gap-2 z-40"
+                onClick={() => {
+                    const essaysSection = document.getElementById('essays');
+                    essaysSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="absolute hidden lg:flex items-center gap-2 z-40 cursor-pointer bg-transparent border-none"
                 style={{
                     left: '192px',
                     bottom: '50px',
@@ -149,13 +182,13 @@ export function LatestPodcasts() {
                     }}
                     className="flex items-center gap-2"
                 >
-                    <span className="text-sm font-medium text-[var(--color-foreground)]">Scroll Down</span>
-                    <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M8 0v14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M2 10l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
+                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
+                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </motion.div>
-            </motion.div>
+            </motion.button>
         </Section>
     );
 }

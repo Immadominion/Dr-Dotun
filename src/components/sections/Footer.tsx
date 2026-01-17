@@ -57,7 +57,7 @@ const socialLinks = [
 
 export function Footer() {
     return (
-        <footer className="py-12 md:py-16 bg-[#1a1a1a] text-white">
+        <footer className="py-16 md:py-24 bg-[#1a1a1a] text-white">
             <Container>
                 {/* Top Section */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">

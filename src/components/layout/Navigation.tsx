@@ -75,13 +75,13 @@ export function Navigation() {
 
                     {/* CTA Button - Redesigned solid pill */}
                     <Link
-                        href="https://www.venturesplatform.com/"
+                        href="https://it1j673lesy.typeform.com/to/piDzHmqS?typeform-source=www.venturesplatform.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="cta-pill"
                         style={{ marginLeft: '8px' }}
                     >
-                        <span className="text-sm font-medium">Get funded</span>
+                        <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-serif)' }}>Get funded</span>
                         <svg
                             width="14"
                             height="14"
@@ -149,13 +149,13 @@ export function Navigation() {
                                     </Link>
                                 ))}
                                 <Link
-                                    href="https://www.venturesplatform.com/"
+                                    href="https://it1j673lesy.typeform.com/to/piDzHmqS?typeform-source=www.venturesplatform.com"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={() => setIsOpen(false)}
                                     className="cta-pill justify-center mt-2"
                                 >
-                                    <span className="text-sm font-medium">Get funded</span>
+                                    <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-serif)' }}>Get funded</span>
                                     <svg
                                         width="14"
                                         height="14"

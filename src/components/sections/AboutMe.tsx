@@ -5,7 +5,7 @@ import { Container, Section } from "../ui/Container";
 
 export function AboutMe() {
     return (
-        <div id="about" className="relative overflow-visible pt-8 pb-12 md:py-16 lg:py-0 lg:h-[1024px] max-w-[1440px] mx-auto snap-section">
+        <div id="about" className="relative overflow-visible pt-12 pb-16 md:py-20 lg:py-0 lg:h-[1024px] max-w-[1440px] mx-auto snap-section">
             {/* Background overlay - theme-aware with soft top edge */}
             {/* Mobile: extends 150px up, Tablet: 300px, Desktop: 500px */}
             <div
@@ -18,13 +18,13 @@ export function AboutMe() {
                     transform: 'translateX(-50%)',
                 }}
             />
-            {/* Mobile/Tablet overlay - smaller extension */}
+            {/* Mobile/Tablet overlay - extended higher for proper image blending */}
             <div
                 className="absolute pointer-events-none z-20 about-overlay-mobile lg:hidden"
                 style={{
                     width: '100vw',
-                    height: 'calc(100% + 200px)',
-                    top: '-200px',
+                    height: 'calc(100% + 450px)', // Extended from 200px to 450px for mobile image blending
+                    top: '-450px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                 }}
@@ -89,8 +89,8 @@ export function AboutMe() {
                         style={{
                             fontFamily: 'Poppins, sans-serif',
                             fontWeight: 400,
-                            lineHeight: '140%',
-                            letterSpacing: '-0.05em',
+                            lineHeight: '150%',
+                            letterSpacing: '-0.04em',
                             textAlign: 'center',
                             color: 'var(--color-foreground)',
                             marginBottom: '24px'
@@ -109,8 +109,8 @@ export function AboutMe() {
                         style={{
                             fontFamily: 'Poppins, sans-serif',
                             fontWeight: 400,
-                            lineHeight: '140%',
-                            letterSpacing: '-0.05em',
+                            lineHeight: '150%',
+                            letterSpacing: '-0.04em',
                             textAlign: 'center',
                             color: 'var(--color-foreground)'
                         }}
@@ -121,10 +121,14 @@ export function AboutMe() {
             </div>
 
             {/* Scroll Down indicator - desktop only, positioned relative to section */}
-            <motion.div
+            <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="absolute hidden lg:flex items-center gap-2 z-30"
+                onClick={() => {
+                    const podcastSection = document.getElementById('podcast');
+                    podcastSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="absolute hidden lg:flex items-center gap-2 z-30 cursor-pointer bg-transparent border-none"
                 style={{
                     left: '192px',
                     bottom: '97px',
@@ -139,13 +143,13 @@ export function AboutMe() {
                     }}
                     className="flex items-center gap-2"
                 >
-                    <span className="text-sm font-medium text-[var(--color-foreground)]">Scroll Down</span>
-                    <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M8 0v14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M2 10l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
+                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
+                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </motion.div>
-            </motion.div>
+            </motion.button>
         </div>
     );
 }

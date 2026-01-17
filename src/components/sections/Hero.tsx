@@ -61,7 +61,7 @@ export function Hero() {
 
             {/* Hero Title - Figma specs: 128px, positioned from top */}
             {/* Distance from top to title baseline area: allows for nav bar height (~68px) + spacing */}
-            <div className="relative text-center" style={{ paddingTop: 'calc(68px + 60px)', zIndex: 30 }}>
+            <div className="relative text-center" style={{ paddingTop: 'calc(68px + 80px)', zIndex: 30 }}>
                 <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -167,17 +167,33 @@ export function Hero() {
                             </div>
                         </motion.div>
 
-                        {/* Main Image - responsive sizing, desktop exact Figma specs: 913x1146px */}
-                        {/* Stacked absolutely to not affect layout */}
+                        {/* Main Image - responsive sizing and positioning */}
+                        {/* Mobile: positioned lower, Tablet: centered, Desktop: exact Figma specs */}
                         <div
                             className="absolute w-[280px] h-[350px] md:w-[500px] md:h-[630px] lg:w-[913px] lg:h-[1146px]"
                             style={{
-                                top: '-50px',
                                 left: '50%',
                                 transform: 'translateX(-50%)',
                                 zIndex: 5,
                             }}
                         >
+                            <style jsx>{`
+                                @media (max-width: 767px) {
+                                    div {
+                                        top: 80px !important;
+                                    }
+                                }
+                                @media (min-width: 768px) and (max-width: 1023px) {
+                                    div {
+                                        top: 0px !important;
+                                    }
+                                }
+                                @media (min-width: 1024px) {
+                                    div {
+                                        top: -50px !important;
+                                    }
+                                }
+                            `}</style>
                             <Image
                                 src="/assets/images/main-img.png"
                                 alt="Dr. Dotun Olowoporoku"
@@ -234,14 +250,18 @@ export function Hero() {
 
             {/* Wave removed - now stacked below image */}
 
-            {/* Scroll Indicator - 66px from bottom, 192px from left - desktop only */}
-            <motion.div
+            {/* Scroll Indicator - moved further left for better spacing */}
+            <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: scrolledPastHero ? 0 : 1 }}
                 transition={{ duration: 0.3 }}
-                className="absolute z-40 hidden lg:flex items-center gap-2"
+                onClick={() => {
+                    const aboutSection = document.getElementById('about');
+                    aboutSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="absolute z-40 hidden lg:flex items-center gap-2 cursor-pointer bg-transparent border-none"
                 style={{
-                    left: '192px',
+                    left: '100px',
                     bottom: '105px',
                     pointerEvents: scrolledPastHero ? 'none' : 'auto'
                 }}
@@ -255,14 +275,14 @@ export function Hero() {
                     }}
                     className="flex items-center gap-2"
                 >
-                    <span className="text-sm font-medium text-[var(--color-foreground)]">Scroll Down</span>
-                    {/* Custom scroll icon */}
-                    <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M8 0v14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M2 10l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
+                    {/* Smaller, more balanced scroll icon */}
+                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
+                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </motion.div>
-            </motion.div>
+            </motion.button>
 
             {/* Stay in Touch Button - Expandable Email Subscription - Responsive */}
             <motion.div

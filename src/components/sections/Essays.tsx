@@ -57,7 +57,7 @@ export function Essays() {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Section id="essays" className="py-20 md:py-28">
+        <Section id="essays" className="py-24 md:py-32">
             <Container>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -91,7 +91,7 @@ export function Essays() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className="flex-shrink-0 w-[380px] md:w-[420px] lg:w-[460px] snap-start"
+                            className="flex-shrink-0 w-[420px] md:w-[480px] lg:w-[520px] snap-start"
                         >
                             <a
                                 href={essay.url}
@@ -121,11 +121,11 @@ export function Essays() {
                                         </span>
                                     </div>
 
-                                    <h3 className="text-[40px] leading-[48px] tracking-[-0.05em] font-normal text-white mb-3 group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 transition-all duration-300" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                                    <h3 className="text-[40px] leading-[48px] tracking-[-0.04em] font-normal text-white mb-3 group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 transition-all duration-300" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.2' }}>
                                         {essay.title}
                                     </h3>
 
-                                    <p className="text-[24px] leading-none tracking-[-0.05em] font-normal text-white/80 line-clamp-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 mb-4 max-h-0 group-hover:max-h-60 overflow-hidden" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                                    <p className="text-[24px] leading-[1.3] tracking-[-0.04em] font-normal text-white/80 line-clamp-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 mb-4 max-h-0 group-hover:max-h-60 overflow-hidden" style={{ fontFamily: 'Poppins, sans-serif' }}>
                                         {essay.excerpt}
                                     </p>
 
@@ -144,11 +144,15 @@ export function Essays() {
             </div>
 
             {/* Scroll Down indicator - bottom left, desktop only */}
-            <motion.div
+            <motion.button
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="absolute hidden lg:flex items-center gap-2 z-40"
+                onClick={() => {
+                    const footer = document.querySelector('footer');
+                    footer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="absolute hidden lg:flex items-center gap-2 z-40 cursor-pointer bg-transparent border-none"
                 style={{
                     left: '192px',
                     bottom: '50px',
@@ -163,13 +167,13 @@ export function Essays() {
                     }}
                     className="flex items-center gap-2"
                 >
-                    <span className="text-sm font-medium text-[var(--color-foreground)]">Scroll Down</span>
-                    <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M8 0v14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M2 10l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
+                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
+                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </motion.div>
-            </motion.div>
+            </motion.button>
         </Section>
     );
 }

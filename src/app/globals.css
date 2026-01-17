@@ -145,24 +145,24 @@ body {
   transition: background-color var(--transition-slow), color var(--transition-slow);
 }
 
-/* About Me Section Overlay - Theme-aware with soft top edge for image blending */
+/* About Me Section Overlay - Theme-aware with stronger opacity for better image blending */
 .about-overlay {
   background: linear-gradient(180deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.1) 15%,
-      rgba(255, 255, 255, 0.4) 30%,
-      rgba(255, 255, 255, 0.7) 45%,
-      rgb(255, 255, 255) 60%,
+      rgba(255, 255, 255, 0.3) 10%,
+      rgba(255, 255, 255, 0.6) 25%,
+      rgba(255, 255, 255, 0.85) 40%,
+      rgb(255, 255, 255) 55%,
       rgb(255, 255, 255) 100%);
 }
 
 [data-theme="dark"] .about-overlay {
   background: linear-gradient(180deg,
       transparent 0%,
-      rgba(10, 10, 10, 0.1) 15%,
-      rgba(10, 10, 10, 0.4) 30%,
-      rgba(10, 10, 10, 0.7) 45%,
-      rgb(10, 10, 10) 60%,
+      rgba(10, 10, 10, 0.3) 10%,
+      rgba(10, 10, 10, 0.6) 25%,
+      rgba(10, 10, 10, 0.85) 40%,
+      rgb(10, 10, 10) 55%,
       rgb(10, 10, 10) 100%);
 }
 
@@ -170,32 +170,32 @@ body {
   :root:not([data-theme="light"]) .about-overlay {
     background: linear-gradient(180deg,
         transparent 0%,
-        rgba(10, 10, 10, 0.1) 15%,
-        rgba(10, 10, 10, 0.4) 30%,
-        rgba(10, 10, 10, 0.7) 45%,
-        rgb(10, 10, 10) 60%,
+        rgba(10, 10, 10, 0.3) 10%,
+        rgba(10, 10, 10, 0.6) 25%,
+        rgba(10, 10, 10, 0.85) 40%,
+        rgb(10, 10, 10) 55%,
         rgb(10, 10, 10) 100%);
   }
 }
 
-/* About Me Section Overlay - Mobile version with faster fade */
+/* About Me Section Overlay - Mobile version with stronger opacity */
 .about-overlay-mobile {
   background: linear-gradient(180deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.2) 20%,
-      rgba(255, 255, 255, 0.5) 40%,
-      rgba(255, 255, 255, 0.8) 60%,
-      rgb(255, 255, 255) 75%,
+      rgba(255, 255, 255, 0.4) 15%,
+      rgba(255, 255, 255, 0.7) 35%,
+      rgba(255, 255, 255, 0.9) 55%,
+      rgb(255, 255, 255) 70%,
       rgb(255, 255, 255) 100%);
 }
 
 [data-theme="dark"] .about-overlay-mobile {
   background: linear-gradient(180deg,
       transparent 0%,
-      rgba(10, 10, 10, 0.2) 20%,
-      rgba(10, 10, 10, 0.5) 40%,
-      rgba(10, 10, 10, 0.8) 60%,
-      rgb(10, 10, 10) 75%,
+      rgba(10, 10, 10, 0.4) 15%,
+      rgba(10, 10, 10, 0.7) 35%,
+      rgba(10, 10, 10, 0.9) 55%,
+      rgb(10, 10, 10) 70%,
       rgb(10, 10, 10) 100%);
 }
 
@@ -203,10 +203,10 @@ body {
   :root:not([data-theme="light"]) .about-overlay-mobile {
     background: linear-gradient(180deg,
         transparent 0%,
-        rgba(10, 10, 10, 0.2) 20%,
-        rgba(10, 10, 10, 0.5) 40%,
-        rgba(10, 10, 10, 0.8) 60%,
-        rgb(10, 10, 10) 75%,
+        rgba(10, 10, 10, 0.4) 15%,
+        rgba(10, 10, 10, 0.7) 35%,
+        rgba(10, 10, 10, 0.9) 55%,
+        rgb(10, 10, 10) 70%,
         rgb(10, 10, 10) 100%);
   }
 }
@@ -336,7 +336,7 @@ body {
 /* Text hover scale effect - for entire text blocks */
 .hover-text-block {
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: default;
 }
 
@@ -519,27 +519,32 @@ body {
 }
 
 /* ===== FIGMA LIQUID GLASS NAVIGATION ===== */
-/* Exact Figma specs: Refraction 80, Depth 16, Dispersion 50, Frost 4, -45deg, 80%, #FFF 20% */
+/* Enhanced with rainbow refraction effect using chromatic aberration */
 
-/* Light mode (default) - white glassmorphic */
+/* Light mode (default) - maximum glass effect */
+/* Note: True SVG displacement refraction (from article) only works in Chrome */
+/* This uses maximum blur + saturation for cross-browser glass appearance */
 .nav-frosted-glass {
   position: relative;
   background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.3) 0%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.2) 100%);
-  backdrop-filter: blur(4px) saturate(120%);
-  -webkit-backdrop-filter: blur(4px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.25) 100%);
+  backdrop-filter: blur(30px) saturate(200%) brightness(1.1) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.1) !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.4);
   transition: all 0.3s ease;
-  overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  overflow: visible;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+/* Rainbow refraction effect - chromatic aberration on borders */
 .nav-frosted-glass::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -1px;
   background: linear-gradient(135deg,
       rgba(255, 255, 255, 0.2) 0%,
       transparent 40%,
@@ -548,8 +553,14 @@ body {
   opacity: 0.8;
   border-radius: inherit;
   pointer-events: none;
+  /* Rainbow border effect using multiple box-shadows for chromatic aberration */
+  box-shadow:
+    0 0 0 0.5px rgba(255, 100, 100, 0.15),
+    0 0 0 1px rgba(100, 255, 255, 0.1),
+    0 0 0 1.5px rgba(255, 200, 100, 0.08);
 }
 
+/* Specular highlight on top edge */
 .nav-frosted-glass::after {
   content: '';
   position: absolute;
@@ -571,13 +582,15 @@ body {
 
 [data-theme="dark"] .nav-frosted-glass {
   background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.25) 0%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0.15) 100%);
-  backdrop-filter: blur(4px) saturate(120%);
-  -webkit-backdrop-filter: blur(4px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.18) 100%);
+  backdrop-filter: blur(30px) saturate(200%) brightness(1.1) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.1) !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] .nav-frosted-glass::before {
@@ -587,6 +600,11 @@ body {
       transparent 60%,
       rgba(255, 255, 255, 0.08) 100%);
   opacity: 0.8;
+  /* Subtle rainbow in dark mode */
+  box-shadow:
+    0 0 0 0.5px rgba(255, 150, 150, 0.12),
+    0 0 0 1px rgba(150, 255, 255, 0.08),
+    0 0 0 1.5px rgba(255, 220, 150, 0.06);
 }
 
 [data-theme="dark"] .nav-frosted-glass::after {
@@ -605,9 +623,9 @@ body {
         rgba(255, 255, 255, 0.25) 0%,
         rgba(255, 255, 255, 0.1) 50%,
         rgba(255, 255, 255, 0.15) 100%);
-    backdrop-filter: blur(4px) saturate(120%);
-    -webkit-backdrop-filter: blur(4px) saturate(120%);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.25);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
@@ -618,6 +636,10 @@ body {
         transparent 60%,
         rgba(255, 255, 255, 0.08) 100%);
     opacity: 0.8;
+    box-shadow:
+      0 0 0 0.5px rgba(255, 150, 150, 0.12),
+      0 0 0 1px rgba(150, 255, 255, 0.08),
+      0 0 0 1.5px rgba(255, 220, 150, 0.06);
   }
 
   :root:not([data-theme="light"]) .nav-frosted-glass::after {
@@ -629,6 +651,7 @@ body {
         transparent 100%);
   }
 }
+
 
 /* Stay in Touch button - premium glass effect */
 .stay-in-touch-btn {
@@ -673,7 +696,7 @@ body {
   color: white;
   padding: 16px 24px;
   border-radius: 16px;
-  border: 2px solid rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 1);
   font-weight: 500;
   font-family: 'Times New Roman', Times, serif;
   transition: transform 0.3s ease, background 0.3s ease;
@@ -687,6 +710,17 @@ body {
 .cta-pill:hover {
   transform: scale(1.05);
   background: #1a1a1a;
+}
+
+/* Dark mode - no white border */
+[data-theme="dark"] .cta-pill {
+  border: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cta-pill {
+    border: none;
+  }
 }
 
 /* Icon stays in place - no separate animation */
