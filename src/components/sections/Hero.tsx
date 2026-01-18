@@ -289,7 +289,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: scrolledPastHero ? 0 : 1, y: scrolledPastHero ? 20 : 0 }}
                 transition={{ duration: 0.5 }}
-                className="fixed lg:absolute z-40 bottom-6 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto lg:right-[192px] lg:bottom-[66px]"
+                className="fixed lg:absolute z-40 bottom-6 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto lg:right-[100px] lg:bottom-[105px]"
                 style={{
                     pointerEvents: scrolledPastHero ? 'none' : 'auto'
                 }}

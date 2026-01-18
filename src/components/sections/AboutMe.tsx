@@ -36,7 +36,7 @@ export function AboutMe() {
                 <div
                     className="mx-auto text-center px-6 lg:px-0"
                     style={{
-                        maxWidth: '1024px',
+                        maxWidth: '800px',
                         width: '100%',
                     }}
                 >
