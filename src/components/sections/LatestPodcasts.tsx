@@ -48,7 +48,7 @@ export function LatestPodcasts() {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Section id="podcast" className="overflow-hidden py-32 md:py-40 lg:py-48">
+        <Section id="podcast" className="overflow-visible py-32 md:py-40 lg:py-48">
             <Container>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -67,10 +67,10 @@ export function LatestPodcasts() {
             </Container>
 
             {/* Horizontal Scroll Container */}
-            <div className="relative">
+            <div className="relative overflow-y-visible">
                 <div
                     ref={scrollRef}
-                    className="flex gap-6 overflow-x-auto py-4 pr-[var(--section-padding-x)] scrollbar-hide snap-x snap-mandatory"
+                    className="flex gap-6 overflow-x-auto overflow-y-visible -mt-36 pt-40 pb-4 pr-[var(--section-padding-x)] scrollbar-hide snap-x snap-mandatory"
                     style={{
                         scrollbarWidth: "none",
                         msOverflowStyle: "none",
@@ -79,10 +79,15 @@ export function LatestPodcasts() {
                     {podcastEpisodes.map((episode, idx) => (
                         <motion.div
                             key={episode.id}
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true, margin: "-500px" }}
-                            transition={{ duration: 0.5, delay: idx * 0.1 }}
+                            initial={{ opacity: 0, y: 150, scale: 0.9 }}
+                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 120,
+                                damping: 10,
+                                delay: idx * 0.18,
+                            }}
                             className="flex-shrink-0 w-[315px] md:w-[415px] lg:w-[530px] snap-start"
                         >
                             <a
@@ -127,10 +132,15 @@ export function LatestPodcasts() {
 
                     {/* See More Card */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ duration: 0.5, delay: podcastEpisodes.length * 0.1 }}
+                        initial={{ opacity: 0, y: 150, scale: 0.9 }}
+                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 120,
+                            damping: 10,
+                            delay: podcastEpisodes.length * 0.18,
+                        }}
                         className="flex-shrink-0 w-[315px] md:w-[415px] lg:w-[530px] snap-start"
                     >
                         <a
