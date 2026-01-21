@@ -57,7 +57,7 @@ const socialLinks = [
 
 export function Footer() {
     return (
-        <footer className="py-16 md:py-24 bg-[#1a1a1a] text-white">
+        <footer className="py-16 md:py-24 mt-16 md:mt-24 lg:mt-32 bg-[#1a1a1a] text-white">
             <Container>
                 {/* Top Section */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
@@ -88,15 +88,15 @@ export function Footer() {
                         href="https://drdotun.substack.com/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 bg-white/5 backdrop-blur-md rounded-full pl-1 pr-6 py-1 hover:bg-white/10 transition-all duration-300 group border border-white/10"
+                        className="flex items-center gap-3 bg-white/15 backdrop-blur-md rounded-full pl-1 pr-6 py-1 hover:bg-white/20 transition-all duration-300 group border border-white/20"
                     >
-                        <span className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/15 transition-colors">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <span className="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 group-hover:bg-white/25 transition-colors">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 12h14" />
                                 <path d="m12 5 7 7-7 7" />
                             </svg>
                         </span>
-                        <span className="font-medium">Subscribe to Substack</span>
+                        <span className="font-medium text-sm">Subscribe to Substack</span>
                     </a>
                 </div>
 

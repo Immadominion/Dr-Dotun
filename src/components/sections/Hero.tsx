@@ -170,30 +170,13 @@ export function Hero() {
                         {/* Main Image - responsive sizing and positioning */}
                         {/* Mobile: positioned lower, Tablet: centered, Desktop: exact Figma specs */}
                         <div
-                            className="absolute w-[280px] h-[350px] md:w-[500px] md:h-[630px] lg:w-[913px] lg:h-[1146px]"
+                            className="hero-main-image absolute w-[280px] h-[350px] md:w-[500px] md:h-[630px] lg:w-[913px] lg:h-[1146px]"
                             style={{
                                 left: '50%',
                                 transform: 'translateX(-50%)',
                                 zIndex: 5,
                             }}
                         >
-                            <style jsx>{`
-                                @media (max-width: 767px) {
-                                    div {
-                                        top: 80px !important;
-                                    }
-                                }
-                                @media (min-width: 768px) and (max-width: 1023px) {
-                                    div {
-                                        top: 0px !important;
-                                    }
-                                }
-                                @media (min-width: 1024px) {
-                                    div {
-                                        top: -50px !important;
-                                    }
-                                }
-                            `}</style>
                             <Image
                                 src="/assets/images/main-img.png"
                                 alt="Dr. Dotun Olowoporoku"
@@ -276,10 +259,9 @@ export function Hero() {
                     className="flex items-center gap-2"
                 >
                     <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
-                    {/* Smaller, more balanced scroll icon */}
-                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-foreground)] rotate-90">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
                 </motion.div>
             </motion.button>
@@ -437,7 +419,7 @@ export function Hero() {
                             onKeyDown={(e) => e.key === 'Enter' && handleSubscribe(e)}
                             className="w-full bg-transparent outline-none text-black text-sm lg:text-base"
                             style={{
-                                fontFamily: 'var(--font-display)',
+                                fontFamily: 'var(--font-sans)',
                                 fontWeight: 500,
                                 letterSpacing: '-0.02em',
                             }}
@@ -446,31 +428,29 @@ export function Hero() {
                 </motion.div>
 
                 {/* Close button - positioned outside the container */}
-                <motion.button
-                    initial={false}
-                    animate={{
-                        opacity: isExpanded ? 1 : 0,
-                        scale: isExpanded ? 1 : 0.5,
-                    }}
-                    transition={{
-                        duration: 0.3,
-                        delay: isExpanded ? 0.25 : 0,
-                        ease: [0.4, 0, 0.2, 1],
-                    }}
-                    onClick={() => {
-                        setIsExpanded(false);
-                        setEmail("");
-                        setStatus("idle");
-                    }}
-                    className="absolute -top-2 -right-2 w-7 h-7 bg-black rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors shadow-lg"
-                    style={{
-                        pointerEvents: isExpanded ? 'auto' : 'none',
-                    }}
-                >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-                        <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                </motion.button>
+                <AnimatePresence>
+                    {isExpanded && (
+                        <motion.button
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.5 }}
+                            transition={{
+                                duration: 0.3,
+                                ease: [0.4, 0, 0.2, 1],
+                            }}
+                            onClick={() => {
+                                setIsExpanded(false);
+                                setEmail("");
+                                setStatus("idle");
+                            }}
+                            className="absolute -top-2 -right-2 w-7 h-7 bg-black rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors shadow-lg"
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                                <path d="M18 6L6 18M6 6l12 12" />
+                            </svg>
+                        </motion.button>
+                    )}
+                </AnimatePresence>
             </motion.div>
         </section>
     );

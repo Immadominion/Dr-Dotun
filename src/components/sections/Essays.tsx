@@ -57,7 +57,7 @@ export function Essays() {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Section id="essays" className="py-24 md:py-32">
+        <Section id="essays" className="py-32 md:py-40 lg:py-48">
             <Container>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -78,7 +78,7 @@ export function Essays() {
             <div className="relative">
                 <div
                     ref={scrollRef}
-                    className="flex gap-6 overflow-x-auto pb-8 px-[var(--section-padding-x)] scrollbar-hide snap-x snap-mandatory"
+                    className="flex gap-6 overflow-x-auto py-4 pr-[var(--section-padding-x)] scrollbar-hide snap-x snap-mandatory"
                     style={{
                         scrollbarWidth: "none",
                         msOverflowStyle: "none",
@@ -91,13 +91,13 @@ export function Essays() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className="flex-shrink-0 w-[420px] md:w-[480px] lg:w-[520px] snap-start"
+                            className="flex-shrink-0 w-[315px] md:w-[415px] lg:w-[530px] snap-start"
                         >
                             <a
                                 href={essay.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group block relative overflow-hidden rounded-[var(--radius-xl)] cursor-pointer h-[500px] md:h-[550px]"
+                                className="group block relative overflow-hidden rounded-[var(--radius-xl)] lg:rounded-[56px] cursor-pointer aspect-[5/4.85]"
                             >
                                 <div className="absolute inset-0">
                                     <Image
@@ -144,36 +144,38 @@ export function Essays() {
             </div>
 
             {/* Scroll Down indicator - bottom left, desktop only */}
-            <motion.button
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                onClick={() => {
-                    const footer = document.querySelector('footer');
-                    footer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="absolute hidden lg:flex items-center gap-2 z-40 cursor-pointer bg-transparent border-none"
-                style={{
-                    left: '192px',
-                    bottom: '50px',
-                }}
-            >
-                <motion.div
-                    animate={{ y: [0, 5, 0] }}
-                    transition={{
-                        repeat: Infinity,
-                        duration: 1.5,
-                        ease: "easeInOut"
+            <div className="max-w-[1440px] mx-auto relative">
+                <motion.button
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    onClick={() => {
+                        const footer = document.querySelector('footer');
+                        footer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
-                    className="flex items-center gap-2"
+                    className="absolute hidden lg:flex items-center gap-2 z-40 cursor-pointer bg-transparent border-none"
+                    style={{
+                        left: '100px',
+                        bottom: '-75px',
+                    }}
                 >
-                    <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
-                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </motion.div>
-            </motion.button>
+                    <motion.div
+                        animate={{ y: [0, 5, 0] }}
+                        transition={{
+                            repeat: Infinity,
+                            duration: 1.5,
+                            ease: "easeInOut"
+                        }}
+                        className="flex items-center gap-2"
+                    >
+                        <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-foreground)] rotate-90">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </motion.div>
+                </motion.button>
+            </div>
         </Section>
     );
 }

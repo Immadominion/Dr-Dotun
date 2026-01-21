@@ -130,8 +130,8 @@ export function AboutMe() {
                 }}
                 className="absolute hidden lg:flex items-center gap-2 z-30 cursor-pointer bg-transparent border-none"
                 style={{
-                    left: '192px',
-                    bottom: '97px',
+                    left: '100px',
+                    bottom: '105px',
                 }}
             >
                 <motion.div
@@ -144,9 +144,9 @@ export function AboutMe() {
                     className="flex items-center gap-2"
                 >
                     <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
-                    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" className="text-[var(--color-foreground)]">
-                        <path d="M6 0v11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                        <path d="M1 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-foreground)] rotate-90">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
                     </svg>
                 </motion.div>
             </motion.button>
