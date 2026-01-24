@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "./ThemeProvider";
 
 const navItems = [
     { label: "About Me", href: "#about", scrollTarget: "about" },
@@ -14,6 +15,11 @@ const navItems = [
 export function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const { resolvedTheme, setTheme, mounted } = useTheme();
+
+    const toggleTheme = () => {
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -71,6 +77,27 @@ export function Navigation() {
                                 {item.label}
                             </Link>
                         ))}
+
+                        {/* Theme Toggle */}
+                        {mounted && (
+                            <button
+                                onClick={toggleTheme}
+                                className="p-2 rounded-full hover:bg-[var(--color-background-secondary)] transition-colors text-[var(--color-foreground)]"
+                                aria-label="Toggle theme"
+                            >
+                                <AnimatePresence mode="wait" initial={false}>
+                                    <motion.div
+                                        key={resolvedTheme}
+                                        initial={{ y: -20, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        exit={{ y: 20, opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </button>
+                        )}
                     </div>
 
                     {/* CTA Button - Redesigned solid pill */}
@@ -117,6 +144,16 @@ export function Navigation() {
                     </Link>
 
                     <div className="flex items-center gap-2">
+                        {/* Theme Toggle - Mobile */}
+                        {mounted && (
+                            <button
+                                onClick={toggleTheme}
+                                className="p-2 rounded-full hover:bg-[var(--color-background-secondary)] transition-colors text-[var(--color-foreground)]"
+                                aria-label="Toggle theme"
+                            >
+                                {resolvedTheme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                            </button>
+                        )}
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className="p-2 rounded-full hover:bg-[var(--color-background-secondary)] transition-colors text-[var(--color-foreground)]"

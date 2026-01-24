@@ -1,17 +1,14 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export function Hero() {
     const [mounted, setMounted] = useState(false);
     const [scrolledPastHero, setScrolledPastHero] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [email, setEmail] = useState("");
-    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [isLoading, setIsLoading] = useState(false);
     const heroRef = useRef<HTMLElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -25,33 +22,16 @@ export function Hero() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Focus input when expanded
-    useEffect(() => {
-        if (isExpanded && inputRef.current) {
-            setTimeout(() => inputRef.current?.focus(), 300);
-        }
-    }, [isExpanded]);
+    const handleStayInTouch = () => {
+        if (isLoading) return;
 
-    const handleSubscribe = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!email || status === "loading") return;
+        setIsLoading(true);
 
-        setStatus("loading");
-
-        try {
-            // Redirect to Substack with email prefilled for subscription
-            const substackUrl = `https://drdotun.substack.com/subscribe?email=${encodeURIComponent(email)}`;
-            window.open(substackUrl, '_blank');
-            setStatus("success");
-            setTimeout(() => {
-                setStatus("idle");
-                setIsExpanded(false);
-                setEmail("");
-            }, 2000);
-        } catch {
-            setStatus("error");
-            setTimeout(() => setStatus("idle"), 2000);
-        }
+        // Animate for a moment then redirect
+        setTimeout(() => {
+            window.open('https://drdotun.substack.com/subscribe', '_blank');
+            setIsLoading(false);
+        }, 800);
     };
 
     return (
@@ -266,7 +246,7 @@ export function Hero() {
                 </motion.div>
             </motion.button>
 
-            {/* Stay in Touch Button - Expandable Email Subscription - Responsive */}
+            {/* Stay in Touch Button - Simple redirect to Substack */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: scrolledPastHero ? 0 : 1, y: scrolledPastHero ? 20 : 0 }}
@@ -276,104 +256,30 @@ export function Hero() {
                     pointerEvents: scrolledPastHero ? 'none' : 'auto'
                 }}
             >
-                <motion.div
-                    initial={false}
-                    animate={{
-                        width: isExpanded ? 340 : 200,
-                        backgroundColor: isExpanded ? '#FF7731' : '#000000',
-                    }}
-                    transition={{
-                        duration: 0.5,
-                        ease: [0.4, 0, 0.2, 1],
-                    }}
-                    className="flex items-center relative"
+                <motion.button
+                    onClick={handleStayInTouch}
+                    disabled={isLoading}
+                    className="flex items-center relative cursor-pointer"
                     style={{
                         height: '64px',
                         borderRadius: '64px',
                         padding: '4px',
+                        backgroundColor: '#000000',
+                    }}
+                    animate={{
+                        width: isLoading ? 72 : 200,
+                    }}
+                    transition={{
+                        duration: 0.4,
+                        ease: [0.4, 0, 0.2, 1],
                     }}
                 >
-                    {/* Clickable area for collapsed state - covers entire button */}
-                    {!isExpanded && (
-                        <button
-                            onClick={() => setIsExpanded(true)}
-                            className="absolute inset-0 w-full h-full cursor-pointer z-20 rounded-full"
-                            aria-label="Expand email subscription"
-                        />
-                    )}
-
-                    {/* Circle Icon - Animates position */}
-                    <motion.div
-                        initial={false}
-                        animate={{
-                            x: isExpanded ? 268 : 0,
-                        }}
-                        transition={{
-                            duration: 0.5,
-                            ease: [0.4, 0, 0.2, 1],
-                        }}
-                        className="absolute left-[4px] flex items-center justify-center rounded-full flex-shrink-0 z-10"
-                        style={{
-                            width: '56px',
-                            height: '56px',
-                            background: isExpanded ? '#000000' : 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.2) 100%)',
-                            backdropFilter: isExpanded ? 'none' : 'blur(4px) saturate(120%)',
-                            WebkitBackdropFilter: isExpanded ? 'none' : 'blur(4px) saturate(120%)',
-                            border: isExpanded ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
-                            boxShadow: isExpanded ? 'none' : 'inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-                            cursor: isExpanded ? 'pointer' : 'default',
-                        }}
-                        onClick={isExpanded ? handleSubscribe : undefined}
-                    >
-                        {/* Arrow icon - shown when collapsed */}
-                        <motion.div
-                            initial={false}
-                            animate={{
-                                opacity: isExpanded ? 0 : 1,
-                                scale: isExpanded ? 0.5 : 1,
-                            }}
-                            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                            className="absolute"
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M5 12h14" />
-                                <path d="m12 5 7 7-7 7" />
-                            </svg>
-                        </motion.div>
-
-                        {/* Check icon - shown when expanded */}
-                        <motion.div
-                            initial={false}
-                            animate={{
-                                opacity: isExpanded ? 1 : 0,
-                                scale: isExpanded ? 1 : 0.5,
-                            }}
-                            transition={{ duration: 0.25, delay: isExpanded ? 0.15 : 0, ease: [0.4, 0, 0.2, 1] }}
-                            className="absolute"
-                        >
-                            {status === "loading" ? (
-                                <motion.div
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                                    </svg>
-                                </motion.div>
-                            ) : (
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
-                            )}
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Text Label - Fades out when expanded */}
+                    {/* Text Label - Fades out when loading */}
                     <motion.span
                         initial={false}
                         animate={{
-                            opacity: isExpanded ? 0 : 1,
-                            x: isExpanded ? -20 : 0,
+                            opacity: isLoading ? 0 : 1,
+                            x: isLoading ? -20 : 0,
                         }}
                         transition={{
                             duration: 0.3,
@@ -387,70 +293,69 @@ export function Hero() {
                         Stay in Touch
                     </motion.span>
 
-                    {/* Email Input - Fades in when expanded */}
+                    {/* Circle Icon - Animates to center when loading */}
                     <motion.div
                         initial={false}
                         animate={{
-                            opacity: isExpanded ? 1 : 0,
-                            x: isExpanded ? 0 : 20,
+                            x: isLoading ? 4 : 0,
                         }}
                         transition={{
-                            duration: 0.3,
-                            delay: isExpanded ? 0.15 : 0,
+                            duration: 0.4,
                             ease: [0.4, 0, 0.2, 1],
                         }}
-                        className="flex items-center bg-white absolute"
+                        className="absolute left-[4px] flex items-center justify-center rounded-full flex-shrink-0 z-10"
                         style={{
-                            left: '4px',
-                            width: '260px',
+                            width: '56px',
                             height: '56px',
-                            borderRadius: '64px',
-                            paddingLeft: '20px',
-                            paddingRight: '20px',
-                            pointerEvents: isExpanded ? 'auto' : 'none',
+                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.2) 100%)',
+                            backdropFilter: 'blur(4px) saturate(120%)',
+                            WebkitBackdropFilter: 'blur(4px) saturate(120%)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.3)',
                         }}
                     >
-                        <input
-                            ref={inputRef}
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your mail"
-                            onKeyDown={(e) => e.key === 'Enter' && handleSubscribe(e)}
-                            className="w-full bg-transparent outline-none text-black text-sm lg:text-base"
-                            style={{
-                                fontFamily: 'var(--font-sans)',
-                                fontWeight: 500,
-                                letterSpacing: '-0.02em',
+                        {/* Arrow icon - shown when not loading */}
+                        <motion.div
+                            initial={false}
+                            animate={{
+                                opacity: isLoading ? 0 : 1,
+                                scale: isLoading ? 0.5 : 1,
                             }}
-                        />
-                    </motion.div>
-                </motion.div>
-
-                {/* Close button - positioned outside the container */}
-                <AnimatePresence>
-                    {isExpanded && (
-                        <motion.button
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.5 }}
-                            transition={{
-                                duration: 0.3,
-                                ease: [0.4, 0, 0.2, 1],
-                            }}
-                            onClick={() => {
-                                setIsExpanded(false);
-                                setEmail("");
-                                setStatus("idle");
-                            }}
-                            className="absolute -top-2 -right-2 w-7 h-7 bg-black rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors shadow-lg"
+                            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                            className="absolute"
                         >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-                                <path d="M18 6L6 18M6 6l12 12" />
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
                             </svg>
-                        </motion.button>
-                    )}
-                </AnimatePresence>
+                        </motion.div>
+
+                        {/* Loading spinner - shown when loading */}
+                        <motion.div
+                            initial={false}
+                            animate={{
+                                opacity: isLoading ? 1 : 0,
+                                scale: isLoading ? 1 : 0.5,
+                            }}
+                            transition={{ duration: 0.2, delay: isLoading ? 0.1 : 0, ease: [0.4, 0, 0.2, 1] }}
+                            className="absolute"
+                        >
+                            <motion.svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="white"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                            >
+                                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                            </motion.svg>
+                        </motion.div>
+                    </motion.div>
+                </motion.button>
             </motion.div>
         </section>
     );

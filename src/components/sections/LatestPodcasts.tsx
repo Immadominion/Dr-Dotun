@@ -93,6 +93,9 @@ export function LatestPodcasts() {
                             <a
                                 href={episode.spotifyUrl}
                                 className="group block podcast-card relative bg-[#00A3FF] cursor-pointer rounded-[var(--radius-xl)] lg:rounded-[56px] overflow-hidden aspect-[5/4.85]"
+                                style={{
+                                    boxShadow: 'inset 0px 4px 4px 0px hsla(0, 0%, 0%, 0.25), inset 0px -4px 4px 0px hsla(0, 0%, 0%, 0.25)',
+                                }}
                             >
                                 {/* Episode Image */}
                                 <Image
@@ -183,39 +186,53 @@ export function LatestPodcasts() {
                 {/* Scroll fade indicators */}
             </div>
 
-            {/* Scroll Down indicator - bottom left, desktop only */}
-            <div className="max-w-[1440px] mx-auto relative">
-                <motion.button
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    onClick={() => {
-                        const essaysSection = document.getElementById('essays');
-                        essaysSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }}
-                    className="absolute hidden lg:flex items-center gap-2 z-40 cursor-pointer bg-transparent border-none"
+            {/* Check out more link */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex items-center justify-center gap-6 mt-12"
+            >
+                <span
+                    className="text-[16px] text-[var(--color-foreground)]"
                     style={{
-                        left: '100px',
-                        bottom: '-75px',
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 400,
+                        lineHeight: '100%',
+                        letterSpacing: '-0.05em',
                     }}
                 >
-                    <motion.div
-                        animate={{ y: [0, 5, 0] }}
-                        transition={{
-                            repeat: Infinity,
-                            duration: 1.5,
-                            ease: "easeInOut"
-                        }}
-                        className="flex items-center gap-2"
-                    >
-                        <span className="text-sm font-medium text-[var(--color-foreground)]" style={{ fontFamily: 'var(--font-sans)' }}>Scroll Down</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-foreground)] rotate-90">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </motion.div>
-                </motion.button>
-            </div>
+                    Check out More
+                </span>
+                <svg
+                    width="21"
+                    height="11"
+                    viewBox="0 0 21 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-[var(--color-foreground)]"
+                >
+                    <path d="M0.666748 5.33337H20.0001" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M15.3333 10L19.9999 5.33333L15.3333 0.666665" stroke="currentColor" strokeWidth="1.33333" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <a
+                    href="https://open.spotify.com/show/5Hybu09bbEWOoU3xxJZ3Gg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[16px] text-[var(--color-foreground)] underline hover:opacity-70 transition-opacity"
+                    style={{
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 400,
+                        lineHeight: '100%',
+                        letterSpacing: '-0.05em',
+                        textDecorationLine: 'underline',
+                        textUnderlineOffset: '2px',
+                    }}
+                >
+                    Listen on Spotify
+                </a>
+            </motion.div>
         </Section>
     );
 }
