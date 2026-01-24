@@ -93,10 +93,14 @@ export function LatestPodcasts() {
                             <a
                                 href={episode.spotifyUrl}
                                 className="group block podcast-card relative bg-[#00A3FF] cursor-pointer rounded-[var(--radius-xl)] lg:rounded-[56px] overflow-hidden aspect-[5/4.85]"
-                                style={{
-                                    boxShadow: 'inset 0px 4px 4px 0px hsla(0, 0%, 0%, 0.25), inset 0px -4px 4px 0px hsla(0, 0%, 0%, 0.25)',
-                                }}
                             >
+                                {/* Inset shadow overlay - sits above image */}
+                                <div 
+                                    className="absolute inset-0 z-10 pointer-events-none rounded-[inherit]"
+                                    style={{
+                                        boxShadow: 'inset 0px 4px 4px 0px hsla(0, 0%, 0%, 0.25), inset 0px -4px 4px 0px hsla(0, 0%, 0%, 0.25)',
+                                    }}
+                                />
                                 {/* Episode Image */}
                                 <Image
                                     src={episode.image}
