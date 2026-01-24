@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "./ThemeProvider";
+import { LiquidGlass } from "../ui/LiquidGlass";
 
 const navItems = [
     { label: "About Me", href: "#about", scrollTarget: "about" },
@@ -35,6 +36,8 @@ export function Navigation() {
         // The scroll animation with spring is handled by Lenis configuration
     };
 
+    const isDarkMode = resolvedTheme === "dark";
+
     return (
         <>
             {/* Desktop Navigation */}
@@ -45,86 +48,95 @@ export function Navigation() {
                 className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden md:block transition-all duration-300 ${isScrolled ? "top-4" : "top-6"
                     }`}
             >
-                {/* Frosted glass container */}
-                <nav
-                    className="nav-frosted-glass flex items-center justify-between"
-                    style={{
-                        width: '849px',
-                        height: '68px',
-                        paddingLeft: '40px',
-                        paddingRight: '8px',
-                        borderRadius: '16px',
-                    }}
+                {/* Liquid Glass container - refractive in Chrome, frosted fallback in others */}
+                <LiquidGlass
+                    width={849}
+                    height={68}
+                    borderRadius={16}
+                    bezelWidth={12}
+                    refractionStrength={0.6}
+                    specularOpacity={0.25}
+                    isDark={isDarkMode}
                 >
-                    {/* Logo */}
-                    <Link
-                        href="/"
-                        className="px-6 py-2 font-serif text-xl font-bold italic tracking-tight text-[var(--color-foreground)] hover-text-scale"
-                        style={{ fontFamily: "var(--font-serif)" }}
+                    <nav
+                        className="flex items-center justify-between"
+                        style={{
+                            width: '849px',
+                            height: '68px',
+                            paddingLeft: '40px',
+                            paddingRight: '8px',
+                        }}
                     >
-                        Dr Dotun
-                    </Link>
-
-                    {/* Nav Items */}
-                    <div className="flex items-center gap-8">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={(e) => handleSmoothScroll(e, item.scrollTarget)}
-                                className="nav-link text-sm font-medium transition-all text-[var(--color-foreground-secondary)] hover:text-[var(--color-foreground)]"
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-
-                        {/* Theme Toggle */}
-                        {mounted && (
-                            <button
-                                onClick={toggleTheme}
-                                className="p-2 rounded-full hover:bg-[var(--color-background-secondary)] transition-colors text-[var(--color-foreground)]"
-                                aria-label="Toggle theme"
-                            >
-                                <AnimatePresence mode="wait" initial={false}>
-                                    <motion.div
-                                        key={resolvedTheme}
-                                        initial={{ y: -20, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        exit={{ y: 20, opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                    >
-                                        {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </button>
-                        )}
-                    </div>
-
-                    {/* CTA Button - Redesigned solid pill */}
-                    <Link
-                        href="https://it1j673lesy.typeform.com/to/piDzHmqS?typeform-source=www.venturesplatform.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="cta-pill"
-                        style={{ marginLeft: '8px' }}
-                    >
-                        <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-serif)' }}>Get funded</span>
-                        <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="cta-pill-icon"
+                        {/* Logo */}
+                        <Link
+                            href="/"
+                            className="px-6 py-2 font-serif text-xl font-bold italic tracking-tight text-[var(--color-foreground)] hover-text-scale"
+                            style={{ fontFamily: "var(--font-serif)" }}
                         >
-                            <path d="M7 17L17 7" />
-                            <path d="M7 7h10v10" />
-                        </svg>
-                    </Link>
-                </nav>
+                            Dr Dotun
+                        </Link>
+
+                        {/* Nav Items */}
+                        <div className="flex items-center gap-8">
+                            {navItems.map((item) => (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={(e) => handleSmoothScroll(e, item.scrollTarget)}
+                                    className="nav-link text-sm font-medium transition-all text-[var(--color-foreground-secondary)] hover:text-[var(--color-foreground)]"
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+
+                            {/* Theme Toggle */}
+                            {mounted && (
+                                <button
+                                    onClick={toggleTheme}
+                                    className="p-2 rounded-full hover:bg-[var(--color-background-secondary)] transition-colors text-[var(--color-foreground)]"
+                                    aria-label="Toggle theme"
+                                >
+                                    <AnimatePresence mode="wait" initial={false}>
+                                        <motion.div
+                                            key={resolvedTheme}
+                                            initial={{ y: -20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            exit={{ y: 20, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </button>
+                            )}
+                        </div>
+
+                        {/* CTA Button - Redesigned solid pill */}
+                        <Link
+                            href="https://it1j673lesy.typeform.com/to/piDzHmqS?typeform-source=www.venturesplatform.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cta-pill"
+                            style={{ marginLeft: '8px' }}
+                        >
+                            <span className="text-sm font-medium" style={{ fontFamily: 'var(--font-serif)' }}>Get funded</span>
+                            <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="cta-pill-icon"
+                            >
+                                <path d="M7 17L17 7" />
+                                <path d="M7 7h10v10" />
+                            </svg>
+                        </Link>
+                    </nav>
+                </LiquidGlass>
             </motion.header>
 
             {/* Mobile Navigation */}
