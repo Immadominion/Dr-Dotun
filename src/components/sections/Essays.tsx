@@ -78,10 +78,12 @@ export function Essays() {
             <div className="relative overflow-y-visible">
                 <div
                     ref={scrollRef}
-                    className="flex gap-6 overflow-x-auto overflow-y-visible -mt-36 pt-40 pb-4 pr-[var(--section-padding-x)] scrollbar-hide snap-x snap-mandatory"
+                    className="flex gap-6 overflow-x-auto overflow-y-visible -mt-36 pt-40 pb-4 pl-[var(--section-padding-x)] pr-[calc(var(--section-padding-x)+16px)] scrollbar-hide snap-x snap-mandatory"
                     style={{
                         scrollbarWidth: "none",
                         msOverflowStyle: "none",
+                        scrollPaddingLeft: "var(--section-padding-x)",
+                        scrollPaddingRight: "calc(var(--section-padding-x) + 16px)",
                     }}
                 >
                     {essays.map((essay, idx) => (

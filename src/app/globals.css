@@ -42,7 +42,7 @@
   --font-witchcraft: 'Witchcraft', 'Times New Roman', serif;
 
   /* Spacing */
-  --section-padding-x: clamp(1rem, 5vw, 6rem);
+  --section-padding-x: clamp(1rem, 2vw, 6rem);
   --section-padding-y: clamp(3rem, 8vh, 8rem);
   --container-max-width: 1400px;
 
@@ -811,8 +811,12 @@ body {
   padding: 16px 24px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 1);
-  font-weight: 500;
   font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: -0.05em;
   transition: transform 0.3s ease, background 0.3s ease;
   display: flex;
   align-items: center;

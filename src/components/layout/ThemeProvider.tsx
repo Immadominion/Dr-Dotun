@@ -22,7 +22,8 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState<Theme>("system");
+    // Default to light for consistent first paint
+    const [theme, setTheme] = useState<Theme>("light");
     const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
     const [mounted, setMounted] = useState(false);
 

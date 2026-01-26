@@ -5,12 +5,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Container, Section } from "../ui/Container";
 import { Mic } from "lucide-react";
-
 const podcastEpisodes = [
     {
         id: 1,
         guest: "DEEPANKAR RUSTAGI",
         role: "CEO, OmniRetail",
+
         image: "/assets/svg/latest-episodes-spotify-4.svg",
         spotifyUrl: "#",
     },
@@ -70,10 +70,12 @@ export function LatestPodcasts() {
             <div className="relative overflow-y-visible">
                 <div
                     ref={scrollRef}
-                    className="flex gap-6 overflow-x-auto overflow-y-visible -mt-36 pt-40 pb-4 pr-[var(--section-padding-x)] scrollbar-hide snap-x snap-mandatory"
+                    className="flex gap-6 overflow-x-auto overflow-y-visible -mt-36 pt-40 pb-4 pl-[var(--section-padding-x)] pr-[calc(var(--section-padding-x)+16px)] scrollbar-hide snap-x snap-mandatory"
                     style={{
                         scrollbarWidth: "none",
                         msOverflowStyle: "none",
+                        scrollPaddingLeft: "var(--section-padding-x)",
+                        scrollPaddingRight: "calc(var(--section-padding-x) + 16px)",
                     }}
                 >
                     {podcastEpisodes.map((episode, idx) => (
@@ -136,7 +138,6 @@ export function LatestPodcasts() {
                             </a>
                         </motion.div>
                     ))}
-
                     {/* See More Card */}
                     <motion.div
                         initial={{ opacity: 0, y: 150, scale: 0.9 }}
