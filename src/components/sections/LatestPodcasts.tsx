@@ -1,51 +1,64 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Container, Section } from "../ui/Container";
-import { Mic } from "lucide-react";
-const podcastEpisodes = [
+type Episode = {
+    id: string;
+    guest: string;
+    role: string;
+    image: string;
+    url: string;
+};
+
+const fallbackEpisodes: Episode[] = [
     {
-        id: 1,
+        id: "1",
         guest: "DEEPANKAR RUSTAGI",
         role: "CEO, OmniRetail",
-
         image: "/assets/svg/latest-episodes-spotify-4.svg",
-        spotifyUrl: "#",
+        url: "https://open.spotify.com/show/5Hybu09bbEWOoU3xxJZ3Gg",
     },
     {
-        id: 2,
+        id: "2",
         guest: "DARE OKOUDJOU",
         role: "Founder & CEO, Onafriq",
         image: "/assets/svg/latest-episodes-spotify-2.svg",
-        spotifyUrl: "#",
+        url: "https://open.spotify.com/show/5Hybu09bbEWOoU3xxJZ3Gg",
     },
     {
-        id: 3,
+        id: "3",
         guest: "UKA EJE",
         role: "Founder/CEO ThriveAgric",
         image: "/assets/svg/latest-episodes-spotify-3.svg",
-        spotifyUrl: "#",
-    },
-    {
-        id: 4,
-        guest: "DEEPANKAR RUSTAGI",
-        role: "CEO, OmniRetail",
-        image: "/assets/svg/latest-episodes-spotify-4.svg",
-        spotifyUrl: "#",
-    },
-    {
-        id: 5,
-        guest: "INDUSTRY EXPERT",
-        role: "Venture Partner",
-        image: "/assets/svg/latest-episodes-spotify-5.svg",
-        spotifyUrl: "#",
+        url: "https://open.spotify.com/show/5Hybu09bbEWOoU3xxJZ3Gg",
     },
 ];
 
 export function LatestPodcasts() {
     const scrollRef = useRef<HTMLDivElement>(null);
+    const [episodes, setEpisodes] = useState<Episode[]>(fallbackEpisodes);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadPodcasts = async () => {
+            try {
+                const res = await fetch("/api/podcasts");
+                if (!res.ok) throw new Error("Failed to load podcasts");
+                const data = await res.json();
+                setEpisodes(Array.isArray(data?.items) ? data.items : fallbackEpisodes);
+            } catch (err) {
+                setError((err as Error).message);
+                setEpisodes(fallbackEpisodes);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadPodcasts();
+    }, []);
 
     return (
         <Section id="podcast" className="overflow-visible py-32 md:py-40 lg:py-48">
@@ -63,6 +76,9 @@ export function LatestPodcasts() {
                     >
                         Latest Podcast Episodes
                     </h2>
+                    <p className="sr-only" aria-live="polite">
+                        {loading ? "Loading episodes" : error ? "Showing latest saved episodes" : "Latest episodes loaded"}
+                    </p>
                 </motion.div>
             </Container>
 
@@ -78,7 +94,7 @@ export function LatestPodcasts() {
                         scrollPaddingRight: "calc(var(--section-padding-x) + 16px)",
                     }}
                 >
-                    {podcastEpisodes.map((episode, idx) => (
+                    {episodes.map((episode, idx) => (
                         <motion.div
                             key={episode.id}
                             initial={{ opacity: 0, y: 150, scale: 0.9 }}
@@ -93,7 +109,7 @@ export function LatestPodcasts() {
                             className="flex-shrink-0 w-[315px] md:w-[415px] lg:w-[530px] snap-start"
                         >
                             <a
-                                href={episode.spotifyUrl}
+                                href={episode.url}
                                 className="group block podcast-card relative bg-[#00A3FF] cursor-pointer rounded-[var(--radius-xl)] lg:rounded-[56px] overflow-hidden aspect-[5/4.85]"
                             >
                                 {/* Inset shadow overlay - sits above image for depth effect */}
@@ -116,7 +132,7 @@ export function LatestPodcasts() {
                                     {/* Episode info row - name and icons on same line with ellipsis */}
                                     <div className="flex items-center gap-3 w-full">
                                         <h3 className="flex-1 text-[24px] md:text-[28px] lg:text-[32px] leading-tight tracking-[-0.05em] font-normal text-white truncate" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                                            #{episode.id}: {episode.guest} - On {episode.role}
+                                            #{idx + 1}: {episode.guest} - On {episode.role}
                                         </h3>
 
                                         <div className="flex items-center gap-1 flex-shrink-0">
@@ -147,12 +163,12 @@ export function LatestPodcasts() {
                             type: "spring",
                             stiffness: 120,
                             damping: 10,
-                            delay: podcastEpisodes.length * 0.18,
+                            delay: episodes.length * 0.18,
                         }}
                         className="flex-shrink-0 w-[315px] md:w-[415px] lg:w-[530px] snap-start"
                     >
                         <a
-                            href="https://youtube.com/@dotunolowoporoku7147"
+                            href="https://open.spotify.com/show/5Hybu09bbEWOoU3xxJZ3Gg"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group block"

@@ -1,60 +1,58 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Container, Section } from "../ui/Container";
 import { ArrowUpRight } from "lucide-react";
 
-const essays = [
+type Essay = {
+    id: string;
+    title: string;
+    url: string;
+    excerpt: string;
+    category: string;
+    readTime: string;
+    image: string;
+    bgColor: string;
+};
+
+const fallbackEssays: Essay[] = [
     {
-        id: 1,
+        id: "1",
         title: "The Illusion of Protection: Why VCs Don't Sign ND...",
-        fullTitle: "The Illusion of Protection: Why VCs Don't Sign NDAs—And Why Founders Shouldn't Ask Them To",
+        url: "https://drdotun.substack.com/",
+        excerpt: "I finished The House of Morgan last year. Ben Horowitz had recommended it to Kola and me back in 2018 when we visited his office, exploring our first fund. It was an apt recommendation.",
         category: "LEADERSHIP",
         readTime: "5 min read",
-        excerpt: "I finished The House of Morgan last year. Ben Horowitz had recommended it to Kola and me back in 2018 when we visited his office, exploring our first fund. It was an apt recommendation. One story...",
         image: "/assets/images/Rectangle 14.png",
         bgColor: "bg-[#2d3a3a]",
-        url: "https://drdotun.substack.com/",
-    },
-    {
-        id: 2,
-        title: "Thank you + Season 5 Recap",
-        fullTitle: "Thank you + Season 5 Recap",
-        category: "FAITH",
-        readTime: "5 min read",
-        excerpt: "I finished The House of Morgan last year. Ben Horowitz had recommended it to Kola and me back in 2018 when we visited his office, exploring our first fund. It was an apt recommendation. One story...",
-        image: "/assets/images/thank-you.jpg",
-        bgColor: "bg-[#6b7f2a]",
-        url: "https://drdotun.substack.com/",
-    },
-    {
-        id: 3,
-        title: "Nothing beats boots in the dust",
-        fullTitle: "Nothing beats boots in the dust",
-        category: "FAITH",
-        readTime: "5 min read",
-        excerpt: "I finished The House of Morgan last year. Ben Horowitz had recommended it to Kola and me back in 2018 when we visited his office, exploring our first fund. It was an apt recommendation. One story...",
-        image: "/assets/images/Rectangle 14-2.png",
-        bgColor: "bg-[#6b6b6b]",
-        url: "https://drdotun.substack.com/",
-    },
-    {
-        id: 4,
-        title: "The Big Four Fallacy: Rethinking African M...",
-        fullTitle: "The Big Four Fallacy: Rethinking African Markets",
-        category: "VENTURE",
-        readTime: "5 min read",
-        excerpt: "I finished The House of Morgan last year. Ben Horowitz had recommended it to Kola and me back in 2018 when we visited his office, exploring our first fund. It was an apt recommendation. One story...",
-        image: "/assets/images/Rectangle 14-1.png",
-        bgColor: "bg-[#3d2d24]",
-        url: "https://drdotun.substack.com/",
     },
 ];
 
 export function Essays() {
     const scrollRef = useRef<HTMLDivElement>(null);
+    const [essays, setEssays] = useState<Essay[]>(fallbackEssays);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const loadEssays = async () => {
+            try {
+                const res = await fetch("/api/essays");
+                if (!res.ok) throw new Error("Failed to load essays");
+                const data = await res.json();
+                setEssays(Array.isArray(data?.items) ? data.items : fallbackEssays);
+            } catch (err) {
+                setError((err as Error).message);
+                setEssays(fallbackEssays);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadEssays();
+    }, []);
 
     return (
         <Section id="essays" className="py-32 md:py-40 lg:py-48">
@@ -72,6 +70,9 @@ export function Essays() {
                     >
                         Essays on leadership, venture &amp; faith
                     </h2>
+                    <p className="sr-only" aria-live="polite">
+                        {loading ? "Loading essays" : error ? "Showing latest saved essays" : "Latest essays loaded"}
+                    </p>
                 </motion.div>
             </Container>
 
@@ -88,7 +89,7 @@ export function Essays() {
                 >
                     {essays.map((essay, idx) => (
                         <motion.article
-                            key={essay.id}
+                            key={essay.id || `${essay.title}-${idx}`}
                             initial={{ opacity: 0, y: 150, scale: 0.9 }}
                             whileInView={{ opacity: 1, y: 0, scale: 1 }}
                             viewport={{ once: true, margin: "-100px" }}
