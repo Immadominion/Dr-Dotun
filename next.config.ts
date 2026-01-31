@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co" },
       { protocol: "https", hostname: "api.substack.com" },
       { protocol: "https", hostname: "supabase.com" },
+      { protocol: "https", hostname: "*.mzstatic.com" },
     ],
   },
 };
