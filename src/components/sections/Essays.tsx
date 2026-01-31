@@ -129,7 +129,7 @@ export function Essays() {
                                         </span>
                                     </div>
 
-                                    <h3 className="text-[40px] leading-[48px] tracking-[-0.04em] font-normal text-white mb-3 group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 transition-all duration-300" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.2' }}>
+                                    <h3 className="text-[40px] leading-[48px] tracking-[-0.04em] font-normal text-white group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 transition-all duration-300 line-clamp-2" style={{ fontFamily: 'Poppins, sans-serif', lineHeight: '1.2' }}>
                                         {essay.title}
                                     </h3>
 
