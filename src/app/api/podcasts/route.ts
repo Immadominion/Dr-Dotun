@@ -19,7 +19,7 @@ export async function GET() {
             .from("episodes")
             .select("id, guest, role, image, url, published_at")
             .order("published_at", { ascending: false })
-            .limit(6);
+            .limit(10);
 
         if (error) throw error;
 
